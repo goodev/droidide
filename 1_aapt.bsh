@@ -1,0 +1,20 @@
+
+// BeanShell aapt script for JavaIDEdroid
+//
+
+stScriptPath = dirname(pathToFile(getSourceFileInfo()).getAbsolutePath())+"/";
+stScriptPath=stScriptPath.replace('\\','/'); 
+
+source (stScriptPath+"0_setname.bsh");
+outdir=stScriptPath+"bin/test/"+name;
+System.out.println("***** Calling Aapt ...");
+G.bshTask.fnPublishProgress("Running Aapt...");
+
+args =  "p -m -J "+stScriptPath+"gen";
+args += " -M "+stScriptPath+"AndroidManifest.xml";
+args += " -v -S "+stScriptPath+"res";
+args += " -I /sdcard/!Programme/win32/Programs/android-sdk/platforms/android-8/android.jar";
+args += " -f -F "+outdir+"/"+name+".apk.res";
+G.iScriptResultCode = G.ide.fnAapt(args);
+
+if (G.iScriptResultCode>0) G.bshTask.fnToast("aapt failed!",10000);
